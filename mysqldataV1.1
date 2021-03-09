@@ -1,0 +1,49 @@
+# 引入模块
+import MySQLdb
+
+# 获取与数据库的连接
+con = MySQLdb.connect('localhost', 'root', 'abc123,.', 'japanese', charset='utf8')
+
+# 填写需要执行的sql语句
+sql = 'select * from word'
+
+# 使用cursor()方法获取操作游标
+cur = con.cursor()
+
+# 使用execute方法执行SQL语句
+cur.execute(sql)
+
+# 使用 fetchall(): 接收全部的返回结果行.
+# fetchone(): 该方法获取下一个查询结果集。结果集是一个对象
+# rowcount: 这是一个只读属性，并返回执行execute()方法后影响的行数。
+data = cur.fetchall()
+
+# 等待存储数据
+list1 = []
+
+# 遍历获取的数据保存到集合，然后在添加到list1列表里面
+for row in data:
+    dict1 = dict()
+    dict1['id'] = row[0]
+    dict1['word'] = row[1]
+    dict1['alias'] = row[2]
+    dict1['chinese'] = row[3]
+    dict1['tone'] = row[4]
+    dict1['wtype'] = row[5]
+
+    list1.append(dict1)
+
+# 关闭数据库连接
+con.close()
+# print(list1)
+
+def wa_contrast():
+    """输入单词的假名对照"""
+    i = 0
+    while i < len(list1):
+        print(list1[i]['word'])
+        inalias = input('请输入单词的假名：')
+        if inalias == list1[i]['alias']:
+            i += 1
+
+wa_contrast()
